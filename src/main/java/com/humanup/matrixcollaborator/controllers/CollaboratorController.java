@@ -54,15 +54,5 @@ public class CollaboratorController {
         return ResponseEntity.status(HttpStatus.OK).body(findCollaborators);
     }
 
-    @Operation(summary = "Find all collaborators by profile", description = "Find all collaborators by profile title", tags = { "collaborator" })
-    @RequestMapping(value="/collaborator/all/profile", method=RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity getProfileCollaborators(@RequestParam(value="title", defaultValue="Spring Developer") String profileTitle){
-        Optional<List<CollaboratorVO>> findProfile = Optional.ofNullable(collaboratorBS.findListProfilesByProfileTitle(profileTitle));
-        if(findProfile.get().isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This Title not Found");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(findProfile.get());
-    }
 
 }
