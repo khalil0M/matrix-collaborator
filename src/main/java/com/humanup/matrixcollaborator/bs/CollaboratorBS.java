@@ -10,6 +10,5 @@ public interface CollaboratorBS {
     boolean createCollaborator(CollaboratorVO collaboratorVO) throws ProfileException;
     CollaboratorVO findCollaboratorByMailAdresse(String mailAdresse);
     List<CollaboratorVO> findListCollaborator();
-    List<CollaboratorVO> findListProfilesByProfileTitle(String profileTitle);
 
 }

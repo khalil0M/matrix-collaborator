@@ -10,7 +10,5 @@ public interface CollaboratorDAO extends CrudRepository<Collaborator, Long> {
 
     Collaborator findByMailAdresse(String mailAdresse);
     List<Collaborator> findAll();
-    @Query("SELECT c FROM Collaborator c WHERE lower(c.profile.profileTitle) like %:profileTitle% ")
-    List<Collaborator> findListProfilesByProfileTitle(String profileTitle);
 
 }
