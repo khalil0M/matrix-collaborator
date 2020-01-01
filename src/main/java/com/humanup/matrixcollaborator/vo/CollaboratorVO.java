@@ -21,12 +21,10 @@ public class CollaboratorVO {
         public Builder() {
         }
 
-
         public Builder setMailAdresse(String mailAdresse) {
             this.mailAdresse = mailAdresse;
             return this;
         }
-
 
         public CollaboratorVO build() {
             return new CollaboratorVO(mailAdresse);
