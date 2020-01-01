@@ -1,24 +1,41 @@
-package com.humanup.matrixcollaborator.vo;
+package com.humanup.matrixcollaborator.dao.entities;
 
+import javax.persistence.*;
 import java.util.Date;
 
-public class InterviewVO {
+@Entity
+public class Interview {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long interviewId;
     private String interviewTitle;
     private String interviewDescription;
     private Date interviewDate;
-    private String collaborator;
 
-    public InterviewVO() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "collaboratorMailAdresse")
+    private Collaborator collaborator;
 
-    public InterviewVO(String interviewTitle, String interviewDescription, Date interviewDate, String collaborator) {
+    protected Interview() {}
+
+    public Interview(String interviewTitle, String interviewDescription, Date interviewDate, Collaborator collaborator) {
         this.interviewTitle = interviewTitle;
         this.interviewDescription = interviewDescription;
         this.interviewDate = interviewDate;
         this.collaborator = collaborator;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "Interview[id=%d, interviewTitle='%s', interviewDescription='%s']",
+                interviewId, interviewTitle, interviewDescription);
+    }
+
+    public Long getInterviewId() {
+        return interviewId;
+    }
     public String getInterviewTitle() {
         return interviewTitle;
     }
@@ -28,15 +45,16 @@ public class InterviewVO {
     public Date getInterviewDate() {
         return interviewDate;
     }
-    public String getCollaborator() {
+    public Collaborator getCollaborator() {
         return collaborator;
     }
 
-    public static class Builder {
+    public static class Builder{
+
         private String interviewTitle;
         private String interviewDescription;
         private Date interviewDate;
-        private String collaborator;
+        private Collaborator collaborator;
 
         public Builder() {
         }
@@ -45,21 +63,24 @@ public class InterviewVO {
             this.interviewTitle = interviewTitle;
             return this;
         }
+
         public Builder setInterviewDescription(String interviewDescription) {
             this.interviewDescription = interviewDescription;
             return this;
         }
+
         public Builder setInterviewDate(Date interviewDate) {
             this.interviewDate = interviewDate;
             return this;
         }
-        public Builder setCollaborator(String collaborator) {
+
+        public Builder setCollaborator(Collaborator collaborator) {
             this.collaborator = collaborator;
             return this;
         }
 
-        public InterviewVO build() {
-            return new InterviewVO(interviewTitle,interviewDescription,interviewDate,collaborator);
+        public Interview build(){
+            return new Interview( interviewTitle,  interviewDescription, interviewDate, collaborator);
         }
 
     }

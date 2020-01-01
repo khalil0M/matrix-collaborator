@@ -2,7 +2,7 @@ package com.humanup.matrixcollaborator.bs.impl;
 import com.humanup.matrixcollaborator.bs.CollaboratorBS;
 import com.humanup.matrixcollaborator.dao.CollaboratorDAO;
 import com.humanup.matrixcollaborator.dao.entities.Collaborator;
-import com.humanup.matrixcollaborator.exceptions.ProfileException;
+import com.humanup.matrixcollaborator.exceptions.CollaboratorException;
 import com.humanup.matrixcollaborator.vo.CollaboratorVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,8 @@ public class CollaboratorBSImpl implements CollaboratorBS {
     private CollaboratorDAO collaboratorDAO;
 
     @Override
-    @Transactional(rollbackFor = ProfileException.class)
-    public boolean createCollaborator(CollaboratorVO collaboratorVO) throws ProfileException {
+    @Transactional(rollbackFor = CollaboratorException.class)
+    public boolean createCollaborator(CollaboratorVO collaboratorVO) throws CollaboratorException {
         String email =  collaboratorVO.getMailAdresse();
 
         Collaborator collaboratorToSave =new Collaborator.Builder()

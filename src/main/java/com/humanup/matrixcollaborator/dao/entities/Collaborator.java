@@ -1,5 +1,6 @@
 package com.humanup.matrixcollaborator.dao.entities;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Collaborator {
@@ -8,6 +9,9 @@ public class Collaborator {
     @Column(unique = true)
     private String mailAdresse;
 
+
+    @OneToMany(mappedBy="collaborator",fetch=FetchType.LAZY)
+    private List<Interview> interviewList;
 
     public Collaborator() {
     }
