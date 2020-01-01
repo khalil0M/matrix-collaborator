@@ -11,7 +11,7 @@ public interface InterviewDAO extends CrudRepository<Interview, Long> {
     List<Interview> findAll();
     Interview findByInterviewId(long interviewId);
     Interview findByInterviewTitle(String interviewTitle);
-    @Query("SELECT i FROM Interview i WHERE lower(i.collaborator_mail_adresse) like %:mailAdresse% ")
-    List<Interview> indListCollaboratorsByCollaboratorMailAdresse(String mailAdresse);
+    @Query("SELECT i FROM Interview i WHERE i.collaborator.mailAdresse = :mailAdresse ")
+    List<Interview> findListCollaboratorsByCollaboratorMailAdresse(String mailAdresse);
 
 }

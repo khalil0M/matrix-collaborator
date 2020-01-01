@@ -74,7 +74,7 @@ public class InterviewBSImpl implements InterviewBS {
 
     @Override
     public List<InterviewVO> findListCollaboratorsByCollaboratorMailAdresse(String mailAdresse) {
-        return interviewDAO.indListCollaboratorsByCollaboratorMailAdresse(mailAdresse)
+        return interviewDAO.findListCollaboratorsByCollaboratorMailAdresse(mailAdresse)
                 .stream()
                 .map(interviewFinded -> new InterviewVO.Builder()
                         .setInterviewTitle(interviewFinded.getInterviewTitle())
