@@ -1,7 +1,7 @@
 package com.humanup.matrixcollaborator.controllers;
 
 import com.humanup.matrixcollaborator.bs.CollaboratorBS;
-import com.humanup.matrixcollaborator.exceptions.ProfileException;
+import com.humanup.matrixcollaborator.exceptions.CollaboratorException;
 import com.humanup.matrixcollaborator.vo.CollaboratorVO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class CollaboratorController {
     @Operation(summary = "Create Collaborator", description = " Create new collaborator by firstname, lastname ...", tags = { "collaborator" })
     @RequestMapping(value="/collaborator", method= RequestMethod.POST,consumes={ "application/json"})
     @ResponseBody
-    public ResponseEntity createCollaborator(@RequestBody CollaboratorVO collaborator) throws ProfileException {
+    public ResponseEntity createCollaborator(@RequestBody CollaboratorVO collaborator) throws CollaboratorException {
         Optional<Object> findCollaborator = Optional.ofNullable(collaboratorBS.findCollaboratorByMailAdresse(collaborator.getMailAdresse()));
 
         if(findCollaborator.isPresent()){
