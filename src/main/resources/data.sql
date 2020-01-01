@@ -19,7 +19,7 @@ CREATE TABLE interview (
   collaborator_mail_adresse VARCHAR(250) NOT NULL
 );
 
-INSERT INTO interview (interview_title, interview_description, interview_description, interview_date, collaborator_mail_adresse) VALUES
+INSERT INTO interview (interview_title, interview_description, interview_date, collaborator_mail_adresse) VALUES
   ('interview-01','interview-01','2020-01-01','adangote@sqli.com'),
   ('interview-02','interview-02','2020-01-02','aelouardi@sqli.com'),
   ('interview-03','interview-03','2020-01-03','ielouardi@sqli.com'),
