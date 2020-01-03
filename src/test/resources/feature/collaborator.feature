@@ -1,6 +1,6 @@
 Feature: Collaborator End Point
   Background:
-    * url 'http://localhost:8080'
+    * url 'http://localhost:8082'
     * header Accept = 'application/json'
 
   Scenario: Testing valid GET endpoint
