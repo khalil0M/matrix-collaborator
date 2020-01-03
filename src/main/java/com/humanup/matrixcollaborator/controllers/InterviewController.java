@@ -45,7 +45,7 @@ public class InterviewController {
     @Operation(summary = "Find all interviews", description = "Find all interviews", tags = { "interview" })
     @RequestMapping(value="/interview/all", method=RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity getAllPersonInfo(){
+    public ResponseEntity getAllInterviewInfo(){
         List<InterviewVO> findInterviews = interviewBS.findListInterview();
 
         if(findInterviews.isEmpty()){

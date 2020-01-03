@@ -2,6 +2,7 @@ package com.humanup.matrixcollaborator.controllers;
 
 import com.humanup.matrixcollaborator.bs.CollaboratorBS;
 import com.humanup.matrixcollaborator.exceptions.CollaboratorException;
+import com.humanup.matrixcollaborator.exceptions.ProjectException;
 import com.humanup.matrixcollaborator.vo.CollaboratorVO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,18 @@ public class CollaboratorController {
         }
         collaboratorBS.createCollaborator(collaborator);
         return ResponseEntity.status(HttpStatus.CREATED).body(collaborator);
+    }
+
+    @Operation(summary = "Create project", description = " Create new project by email", tags = { "collaborator" })
+    @RequestMapping(value="/collaborator/projects", method=RequestMethod.POST,consumes={ "application/json"})
+    @ResponseBody
+    public ResponseEntity addCollaboratorProject(@RequestParam(value="email", defaultValue="robot@sqli.com") String email,@RequestBody List<Integer> projects ) throws ProjectException {
+        Optional<Object> findCollaborator = Optional.ofNullable(collaboratorBS.addProjectsCollaborator(email,projects));
+
+        if(findCollaborator.isEmpty()){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden Projects Information");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(findCollaborator.get());
     }
 
     @Operation(summary = "Find collaborator by email", description = "Collaborator search by %email% format", tags = { "collaborator" })
