@@ -45,14 +45,14 @@ public class CollaboratorController {
     }
 
     @Operation(summary = "Find collaborator by email", description = "Collaborator search by %email% format", tags = { "collaborator" })
-    @RequestMapping(value="/collaborator", method=RequestMethod.GET)
+    @RequestMapping(value="/collaborator/projects", method=RequestMethod.GET)
     @ResponseBody
     public ResponseEntity getCollaboratorInfo(@RequestParam(value="email", defaultValue="robot@sqli.com") String mailAdresse){
         Optional<CollaboratorVO> findCollaborator = Optional.ofNullable(collaboratorBS.findCollaboratorByMailAdresse(mailAdresse));
         if(findCollaborator.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(findCollaborator.get());
+        return ResponseEntity.status(HttpStatus.OK).body(findCollaborator.get().getProjectVOList());
     }
 
     @Operation(summary = "Find all collaborators", description = "Find all collaborators", tags = { "collaborator" })
