@@ -8,7 +8,7 @@ import java.util.List;
 public interface InterviewBS {
 
     boolean createInterview(InterviewVO interviewVO) throws CollaboratorException;
-    InterviewVO findInterviewByTitle(String InterviewTitle);
+    InterviewVO findInterviewByTitle(String interviewTitle);
     List<InterviewVO> findListInterview();
     List<InterviewVO> findListCollaboratorsByCollaboratorMailAdresse(String mailAdresse);
 
