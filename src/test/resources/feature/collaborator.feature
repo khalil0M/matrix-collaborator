@@ -15,7 +15,8 @@ Feature: Collaborator End Point
     And param email = 'yelouardi@sqli.com'
     When method GET
     Then status 200
-    And match $ contains {projectTitle:"AXA"}
+    * def first = response[1]
+    And match first contains {projectTitle:"AXA"}
 
   Scenario: Testing error response GET Projects Collaborator by email
     Given  path '/collaborator/projects'
@@ -25,10 +26,11 @@ Feature: Collaborator End Point
 
   Scenario: Testing OK reponse GET Interviews collaborator by email
     Given  path '/collaborator/all/interview'
-    And param title = 'yelouardi@sqli.com'
+    And param email = 'yelouardi@sqli.com'
     When method GET
     Then status 200
-    And match $ contains {interviewTitle:"Meeting after Mission"}
+    * def first = response[0]
+    And match first contains {interviewTitle:"Meeting after Mission"}
 
 
   Scenario: Testing error response GET Interviews collaborator by email
@@ -36,14 +38,6 @@ Feature: Collaborator End Point
     And param email = 'ko@sqli.com'
     When method GET
     Then status 404
-
-  Scenario: Add new Collaborator OK response
-    def
-    Given  path 'collaborator'
-    And request { mailAdresse: 'hbenderouach@sqli.com' }
-    When method POST
-    Then status 201
-    And def collaborator = collaborator
 
   Scenario: Add new Collaborator KO response
     Given  path 'collaborator'
