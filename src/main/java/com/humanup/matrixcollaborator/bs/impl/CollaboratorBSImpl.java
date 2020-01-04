@@ -36,8 +36,8 @@ public class CollaboratorBSImpl implements CollaboratorBS {
     public boolean createCollaborator(CollaboratorVO collaboratorVO) throws CollaboratorException {
         String email =  collaboratorVO.getMailAdresse();
 
-        Collaborator collaboratorToSave =new Collaborator.Builder()
-                .setMailAdresse(email)
+        Collaborator collaboratorToSave = Collaborator.builder()
+                .mailAdresse(collaboratorVO.getMailAdresse())
                 .build();
         return  collaboratorDAO.save(collaboratorToSave)!=null;
     }
@@ -63,12 +63,12 @@ public class CollaboratorBSImpl implements CollaboratorBS {
     public CollaboratorVO findCollaboratorByMailAdresse(String mailAdresse) {
         Optional<Collaborator> collaboratorFinded = Optional.ofNullable(collaboratorDAO.findByMailAdresse(mailAdresse));
         if(collaboratorFinded.isPresent()) {
-            return new CollaboratorVO.Builder()
-                    .setMailAdresse(collaboratorFinded.get().getMailAdresse())
-                    .setProjects(collaboratorFinded.get().getProjects().stream()
-                    .map(project -> new ProjectVO.Builder()
-                    .setProjectTitle(project.getProjectTitle())
-                    .setProjectDescription(project.getProjectDescription()).build())
+            return  CollaboratorVO.builder()
+                    .mailAdresse(collaboratorFinded.get().getMailAdresse())
+                    .projectVOList(collaboratorFinded.get().getProjects().stream()
+                    .map(project ->  ProjectVO.builder()
+                    .projectTitle(project.getProjectTitle())
+                    .projectDescription(project.getProjectDescription()).build())
                     .collect(Collectors.toList()))
                     .build();
         }
@@ -79,12 +79,12 @@ public class CollaboratorBSImpl implements CollaboratorBS {
     public List<CollaboratorVO> findListCollaborator() {
         return collaboratorDAO.findAll()
                 .stream()
-                .map(collaboratorFinded -> new CollaboratorVO.Builder()
-                .setMailAdresse(collaboratorFinded.getMailAdresse())
-                .setProjects(collaboratorFinded.getProjects().stream()
-                .map(project -> new ProjectVO.Builder()
-                .setProjectTitle(project.getProjectTitle())
-                .setProjectDescription(project.getProjectDescription()).build())
+                .map(collaboratorFinded -> CollaboratorVO.builder()
+                .mailAdresse(collaboratorFinded.getMailAdresse())
+                .projectVOList(collaboratorFinded.getProjects().stream()
+                .map(project ->  ProjectVO.builder()
+                .projectTitle(project.getProjectTitle())
+                .projectDescription(project.getProjectDescription()).build())
                 .collect(Collectors.toList()))
                 .build())
                 .collect(Collectors.toList());
