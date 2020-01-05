@@ -48,5 +48,5 @@ CREATE TABLE collaborator_project (
 INSERT INTO collaborator_project (mail_adresse, project_id) VALUES
   ('adangote@sqli.com',1),
   ('adangote@sqli.com',2),
-  ('adangote@sqli.com',3),
-  ('adangote@sqli.com',4);
+  ('yelouardi@sqli.com',3),
+  ('yelouardi@sqli.com',4);

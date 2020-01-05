@@ -36,11 +36,11 @@ public class InterviewBSImpl implements InterviewBS {
         if(null == collaborator || null == email || StringUtils.isEmpty(email)){
             throw new CollaboratorException();
         }
-        Interview interviewToSave =new Interview.Builder()
-                .setInterviewTitle(interviewVO.getInterviewTitle())
-                .setInterviewDescription(interviewVO.getInterviewDescription())
-                .setInterviewDate(interviewVO.getInterviewDate())
-                .setCollaborator(collaborator)
+        Interview interviewToSave = Interview.builder()
+                .interviewTitle(interviewVO.getInterviewTitle())
+                .interviewDescription(interviewVO.getInterviewDescription())
+                .interviewDate(interviewVO.getInterviewDate())
+                .collaborator(collaborator)
                 .build();
         return  interviewDAO.save(interviewToSave)!=null;
     }
@@ -49,11 +49,11 @@ public class InterviewBSImpl implements InterviewBS {
     public InterviewVO findInterviewByTitle(String interviewTitle) {
         Optional<Interview> interviewFinded = Optional.ofNullable(interviewDAO.findByInterviewTitle(interviewTitle));
         if(interviewFinded.isPresent()) {
-            return new InterviewVO.Builder()
-                    .setInterviewTitle(interviewFinded.get().getInterviewTitle())
-                    .setInterviewDescription(interviewFinded.get().getInterviewDescription())
-                    .setInterviewDate(interviewFinded.get().getInterviewDate())
-                    .setCollaborator(interviewFinded.get().getCollaborator().getMailAdresse())
+            return  InterviewVO.builder()
+                    .interviewTitle(interviewFinded.get().getInterviewTitle())
+                    .interviewDescription(interviewFinded.get().getInterviewDescription())
+                    .interviewDate(interviewFinded.get().getInterviewDate())
+                    .collaborator(interviewFinded.get().getCollaborator().getMailAdresse())
                     .build();
         }
         return null;
@@ -63,11 +63,11 @@ public class InterviewBSImpl implements InterviewBS {
     public List<InterviewVO> findListInterview() {
         return interviewDAO.findAll()
                 .stream()
-                .map(interviewFinded -> new InterviewVO.Builder()
-                        .setInterviewTitle(interviewFinded.getInterviewTitle())
-                        .setInterviewDescription(interviewFinded.getInterviewDescription())
-                        .setInterviewDate(interviewFinded.getInterviewDate())
-                        .setCollaborator(interviewFinded.getCollaborator().getMailAdresse())
+                .map(interviewFinded ->  InterviewVO.builder()
+                        .interviewTitle(interviewFinded.getInterviewTitle())
+                        .interviewDescription(interviewFinded.getInterviewDescription())
+                        .interviewDate(interviewFinded.getInterviewDate())
+                        .collaborator(interviewFinded.getCollaborator().getMailAdresse())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -76,11 +76,11 @@ public class InterviewBSImpl implements InterviewBS {
     public List<InterviewVO> findListCollaboratorsByCollaboratorMailAdresse(String mailAdresse) {
         return interviewDAO.findListCollaboratorsByCollaboratorMailAdresse(mailAdresse)
                 .stream()
-                .map(interviewFinded -> new InterviewVO.Builder()
-                        .setInterviewTitle(interviewFinded.getInterviewTitle())
-                        .setInterviewDescription(interviewFinded.getInterviewDescription())
-                        .setInterviewDate(interviewFinded.getInterviewDate())
-                        .setCollaborator(interviewFinded.getCollaborator().getMailAdresse())
+                .map(interviewFinded ->  InterviewVO.builder()
+                        .interviewTitle(interviewFinded.getInterviewTitle())
+                        .interviewDescription(interviewFinded.getInterviewDescription())
+                        .interviewDate(interviewFinded.getInterviewDate())
+                        .collaborator(interviewFinded.getCollaborator().getMailAdresse())
                         .build())
                 .collect(Collectors.toList());
     }
