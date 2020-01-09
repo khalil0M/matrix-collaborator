@@ -44,7 +44,7 @@ public class CollaboratorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(findCollaborator.get());
     }
 
-    @Operation(summary = "Find collaborator by email", description = "Collaborator search by %email% format", tags = { "collaborator" })
+    @Operation(summary = "Find projects collaborator by email", description = "Projects Collaborator search by %email% format", tags = { "collaborator" })
     @RequestMapping(value="/collaborator/projects", method=RequestMethod.GET)
     @ResponseBody
     public ResponseEntity getCollaboratorInfo(@RequestParam(value="email", defaultValue="robot@sqli.com") String mailAdresse){

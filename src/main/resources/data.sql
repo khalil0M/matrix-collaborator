@@ -27,7 +27,6 @@ INSERT INTO interview (interview_title, interview_description, interview_date, c
   ('Pre-mission meeting','Pre-mission meeting','2020-01-03','ielouardi@sqli.com'),
   ('Meeting after Mission','Meeting after Mission','2020-01-04','yelouardi@sqli.com');
 
-
 CREATE TABLE project (
   project_id INT AUTO_INCREMENT  PRIMARY KEY,
   project_title VARCHAR(250) NOT NULL,
@@ -48,5 +47,5 @@ CREATE TABLE collaborator_project (
 INSERT INTO collaborator_project (mail_adresse, project_id) VALUES
   ('adangote@sqli.com',1),
   ('adangote@sqli.com',2),
-  ('adangote@sqli.com',3),
-  ('adangote@sqli.com',4);
+  ('yelouardi@sqli.com',3),
+  ('yelouardi@sqli.com',4);

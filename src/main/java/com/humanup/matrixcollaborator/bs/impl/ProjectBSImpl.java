@@ -24,9 +24,9 @@ public class ProjectBSImpl implements ProjectBS {
 
     @Override
     public boolean createProject(ProjectVO projectVO) {
-        Project typeToSave = new Project.Builder()
-                .setProjectTitle(projectVO.getProjectTitle())
-                .setProjectDescription(projectVO.getProjectDescription())
+        Project typeToSave =  Project.builder()
+                .projectTitle(projectVO.getProjectTitle())
+                .projectDescription(projectVO.getProjectDescription())
                 .build();
         return projectDAO.save(typeToSave) != null;
     }
@@ -35,9 +35,9 @@ public class ProjectBSImpl implements ProjectBS {
     public ProjectVO findProjectByTitle(String projectTitle) {
         Optional<Project> projectFinded = Optional.ofNullable(projectDAO.findByProjectTitle(projectTitle));
         if(projectFinded.isPresent()) {
-            return new ProjectVO.Builder()
-                    .setProjectTitle(projectFinded.get().getProjectTitle())
-                    .setProjectDescription(projectFinded.get().getProjectDescription())
+            return  ProjectVO.builder()
+                    .projectTitle(projectFinded.get().getProjectTitle())
+                    .projectDescription(projectFinded.get().getProjectDescription())
                     .build();
         }
         return null;
@@ -47,9 +47,9 @@ public class ProjectBSImpl implements ProjectBS {
     public List<ProjectVO> findListProject() {
         return projectDAO.findAll()
                 .stream()
-                .map(projectFinded -> new ProjectVO.Builder()
-                        .setProjectTitle(projectFinded.getProjectTitle())
-                        .setProjectDescription(projectFinded.getProjectDescription())
+                .map(projectFinded ->  ProjectVO.builder()
+                        .projectTitle(projectFinded.getProjectTitle())
+                        .projectDescription(projectFinded.getProjectDescription())
                         .build())
                 .collect(Collectors.toList());
     }
