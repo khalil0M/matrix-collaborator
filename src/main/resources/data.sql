@@ -1,23 +1,14 @@
-DROP TABLE IF EXISTS collaborator;
+CREATE database matrixdb;
+Use matrixdb;
 DROP TABLE IF EXISTS interview;
 DROP TABLE IF EXISTS project;
 DROP TABLE IF EXISTS collaborator_project;
-
-CREATE TABLE collaborator (
-  mail_adresse VARCHAR(250) PRIMARY KEY
-);
-
-INSERT INTO collaborator (mail_adresse) VALUES
-  ('adangote@sqli.com'),
-  ('aelouardi@sqli.com'),
-  ('ielouardi@sqli.com'),
-  ('yelouardi@sqli.com');
 
 CREATE TABLE interview (
   interview_id INT AUTO_INCREMENT  PRIMARY KEY,
   interview_title VARCHAR(250) NOT NULL,
   interview_description VARCHAR(250) NOT NULL,
-  interview_date DATE DEFAULT current_date,
+  interview_date DATE,
   collaborator_mail_adresse VARCHAR(250) NOT NULL
 );
 
@@ -40,6 +31,7 @@ INSERT INTO project (project_title, project_description) VALUES
   ('AIRBUS','AIRBUS Project');
 
 CREATE TABLE collaborator_project (
+ collaborator_project_id INT AUTO_INCREMENT  PRIMARY KEY,
  mail_adresse VARCHAR(250) NOT NULL,
  project_id INT NOT NULL
 );

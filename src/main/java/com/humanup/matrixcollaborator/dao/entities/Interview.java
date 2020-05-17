@@ -11,19 +11,25 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-@ToString(of= {"interviewId","interviewTitle","interviewDescription","interviewDate"})
+@ToString(of= {"interviewId","interviewTitle","interviewDescription","interviewDate","mailAdresse"})
 @Entity
+@Table (name = "interview")
 public class Interview {
-
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "interview_id")
     Long interviewId;
+    @Column(name = "interview_title")
     String interviewTitle;
+    @Column(name = "interview_description")
     String interviewDescription;
+    @Column(name = "interview_date")
     Date interviewDate;
+    @Column(name = "collaborator_mail_adresse")
+    String mailAdresse;
 
-    @ManyToOne
-    @JoinColumn(name = "collaboratorMailAdresse")
-    private Collaborator collaborator;
+    /*@ManyToOne
+    @JoinColumn(name = "collaborator_mail_adresse")
+    private ProjectCollaborator projectCollaborator;*/
 
 }

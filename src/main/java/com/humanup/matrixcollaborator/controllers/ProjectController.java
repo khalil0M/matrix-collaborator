@@ -1,8 +1,9 @@
 package com.humanup.matrixcollaborator.controllers;
 
+import com.humanup.matrixcollaborator.aop.dto.ProjectCollaboratorException;
+import com.humanup.matrixcollaborator.aop.dto.ProjectException;
 import com.humanup.matrixcollaborator.bs.ProjectBS;
-import com.humanup.matrixcollaborator.exceptions.CollaboratorException;
-import com.humanup.matrixcollaborator.vo.InterviewVO;
+import com.humanup.matrixcollaborator.vo.ProjectCollaboratorVO;
 import com.humanup.matrixcollaborator.vo.ProjectVO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class ProjectController {
     @Operation(summary = "Create Project", description = " Create new project by title, description, ...", tags = { "project" })
     @RequestMapping(value="/project", method= RequestMethod.POST,consumes={ "application/json"})
     @ResponseBody
-    public ResponseEntity createProject(@RequestBody ProjectVO project) {
+    public ResponseEntity createProject(@RequestBody ProjectVO project) throws ProjectException {
         Optional<Object> findProject = Optional.ofNullable(projectBS.findProjectByTitle(project.getProjectTitle()));
 
         if(findProject.isPresent()){
@@ -56,6 +57,23 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(findProjects);
     }
 
+    @Operation(summary = "Create Project Collaborator", description = " Affect new project collaborator by mail adresse Collaborator, Id Project ...", tags = { "projectCollaborator" })
+    @RequestMapping(value="/project/collaborator", method= RequestMethod.POST,consumes={ "application/json"})
+    @ResponseBody
+    public ResponseEntity createProjectCollaborator(@RequestBody ProjectCollaboratorVO projectCollaborator) throws ProjectCollaboratorException {
+        projectBS.createProjectCollaborator(projectCollaborator);
+        return ResponseEntity.status(HttpStatus.CREATED).body(projectCollaborator);
+    }
 
+    @Operation(summary = "Find Project Collaborator by mail adresse", description = "Project Collaborator search by %mailAdresse% format", tags = { "projectCollaborator" })
+    @RequestMapping(value="/project/collaborator/all", method=RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity findAllProjectBymailAdresse(@RequestParam(value="mailAdresse", defaultValue="mailAdresse") String mailAdresse){
+        Optional<List<ProjectVO>> findProject = Optional.ofNullable(projectBS.findAllProjectBymailAdresse(mailAdresse));
+        if(findProject.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(findProject.get());
+    }
 
 }

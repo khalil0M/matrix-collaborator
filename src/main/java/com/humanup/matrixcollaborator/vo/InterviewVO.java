@@ -11,12 +11,12 @@ import java.util.Date;
 @Builder
 @Getter
 @Setter
-@ToString(of= {"interviewTitle","interviewDescription","interviewDate","collaborator"})
+@ToString(of= {"interviewTitle","interviewDescription","interviewDate","mailAdresse"})
 public class InterviewVO {
 
     String interviewTitle;
     String interviewDescription;
     Date interviewDate;
-    String collaborator;
+    String mailAdresse;
 
 }
