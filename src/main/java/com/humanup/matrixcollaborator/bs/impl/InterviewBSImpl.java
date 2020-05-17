@@ -1,13 +1,11 @@
 package com.humanup.matrixcollaborator.bs.impl;
 
+import com.humanup.matrixcollaborator.aop.dto.InterviewException;
 import com.humanup.matrixcollaborator.bs.InterviewBS;
-import com.humanup.matrixcollaborator.dao.CollaboratorDAO;
+import com.humanup.matrixcollaborator.bs.impl.sender.RabbitMQInterviewSender;
 import com.humanup.matrixcollaborator.dao.InterviewDAO;
-import com.humanup.matrixcollaborator.dao.entities.Collaborator;
 import com.humanup.matrixcollaborator.dao.entities.Interview;
-import com.humanup.matrixcollaborator.exceptions.CollaboratorException;
 import com.humanup.matrixcollaborator.vo.InterviewVO;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,30 +17,18 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class InterviewBSImpl implements InterviewBS {
-
-
     @Autowired
     private InterviewDAO interviewDAO;
 
     @Autowired
-    private CollaboratorDAO collaboratorDAO;
+    RabbitMQInterviewSender rabbitMQInterviewSender;
 
     @Override
-    @Transactional(rollbackFor = CollaboratorException.class)
-    public boolean createInterview(InterviewVO interviewVO) throws CollaboratorException {
-        Collaborator collaborator = collaboratorDAO.findByMailAdresse(interviewVO.getCollaborator());
-        String email =  interviewVO.getCollaborator();
-
-        if(null == collaborator || null == email || StringUtils.isEmpty(email)){
-            throw new CollaboratorException();
-        }
-        Interview interviewToSave = Interview.builder()
-                .interviewTitle(interviewVO.getInterviewTitle())
-                .interviewDescription(interviewVO.getInterviewDescription())
-                .interviewDate(interviewVO.getInterviewDate())
-                .collaborator(collaborator)
-                .build();
-        return  interviewDAO.save(interviewToSave)!=null;
+    @Transactional(transactionManager="transactionManagerWrite",rollbackFor = InterviewException.class)
+    public boolean createInterview(InterviewVO interviewVO) throws InterviewException {
+        if (null == interviewVO) throw new InterviewException();
+        rabbitMQInterviewSender.send(interviewVO);
+        return true;
     }
 
     @Override
@@ -53,7 +39,7 @@ public class InterviewBSImpl implements InterviewBS {
                     .interviewTitle(interviewFinded.get().getInterviewTitle())
                     .interviewDescription(interviewFinded.get().getInterviewDescription())
                     .interviewDate(interviewFinded.get().getInterviewDate())
-                    .collaborator(interviewFinded.get().getCollaborator().getMailAdresse())
+                    .mailAdresse(interviewFinded.get().getMailAdresse())
                     .build();
         }
         return null;
@@ -67,20 +53,20 @@ public class InterviewBSImpl implements InterviewBS {
                         .interviewTitle(interviewFinded.getInterviewTitle())
                         .interviewDescription(interviewFinded.getInterviewDescription())
                         .interviewDate(interviewFinded.getInterviewDate())
-                        .collaborator(interviewFinded.getCollaborator().getMailAdresse())
+                        .mailAdresse(interviewFinded.getMailAdresse())
                         .build())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<InterviewVO> findListCollaboratorsByCollaboratorMailAdresse(String mailAdresse) {
-        return interviewDAO.findListCollaboratorsByCollaboratorMailAdresse(mailAdresse)
+    public List<InterviewVO> findListInterviewsByCollaboratorMailAdresse(String mailAdresse) {
+        return interviewDAO.findListInterviewsByCollaboratorMailAdresse(mailAdresse)
                 .stream()
                 .map(interviewFinded ->  InterviewVO.builder()
                         .interviewTitle(interviewFinded.getInterviewTitle())
                         .interviewDescription(interviewFinded.getInterviewDescription())
                         .interviewDate(interviewFinded.getInterviewDate())
-                        .collaborator(interviewFinded.getCollaborator().getMailAdresse())
+                        .mailAdresse(interviewFinded.getMailAdresse())
                         .build())
                 .collect(Collectors.toList());
     }
