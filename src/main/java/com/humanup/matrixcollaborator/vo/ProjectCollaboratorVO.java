@@ -11,8 +11,8 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-@ToString(of= {"mailAdresse","projectVOList"})
-public class CollaboratorVO {
+@ToString(of= {"mailAdresse","projectId"})
+public class ProjectCollaboratorVO {
      String mailAdresse;
-     List<ProjectVO> projectVOList;
+     Long projectId;
 }

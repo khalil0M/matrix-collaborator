@@ -1,7 +1,7 @@
 package com.humanup.matrixcollaborator.controllers;
 
+import com.humanup.matrixcollaborator.aop.dto.InterviewException;
 import com.humanup.matrixcollaborator.bs.InterviewBS;
-import com.humanup.matrixcollaborator.exceptions.CollaboratorException;
 import com.humanup.matrixcollaborator.vo.InterviewVO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class InterviewController {
     @Operation(summary = "Create Interview", description = " Create new interview by title, description, Date, Collaborator ...", tags = { "interview" })
     @RequestMapping(value="/interview", method= RequestMethod.POST,consumes={ "application/json"})
     @ResponseBody
-    public ResponseEntity createInterview(@RequestBody InterviewVO interview) throws CollaboratorException {
+    public ResponseEntity createInterview(@RequestBody InterviewVO interview) throws InterviewException {
         Optional<Object> findInterview = Optional.ofNullable(interviewBS.findInterviewByTitle(interview.getInterviewTitle()));
 
         if(findInterview.isPresent()){
@@ -58,7 +58,7 @@ public class InterviewController {
     @RequestMapping(value="/collaborator/all/interview", method=RequestMethod.GET)
     @ResponseBody
     public ResponseEntity getCollaboratorInterviews(@RequestParam(value="email", defaultValue="robot@sqli.com") String email){
-        Optional<List<InterviewVO>> findCollaborator = Optional.ofNullable(interviewBS.findListCollaboratorsByCollaboratorMailAdresse(email));
+        Optional<List<InterviewVO>> findCollaborator = Optional.ofNullable(interviewBS.findListInterviewsByCollaboratorMailAdresse(email));
         if(findCollaborator.get().isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This Email not Found");
         }

@@ -1,6 +1,6 @@
 Feature: Collaborator End Point
   Background:
-    * url 'http://localhost:8082'
+    * url 'http://localhost:9290'
     * header Accept = 'application/json'
 
   Scenario: Testing valid GET endpoint
@@ -12,7 +12,7 @@ Feature: Collaborator End Point
 
   Scenario: Testing OK reponse GET Projects Collaborator by email
     Given  path '/collaborator/projects'
-    And param email = 'yelouardi@sqli.com'
+    And param email = 'hamza@sqli.com'
     When method GET
     Then status 200
     * def first = response[1]
