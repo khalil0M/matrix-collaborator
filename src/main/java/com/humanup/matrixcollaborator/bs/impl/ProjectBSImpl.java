@@ -1,11 +1,13 @@
 package com.humanup.matrixcollaborator.bs.impl;
 
+import com.humanup.matrixcollaborator.aop.dto.ProjectCollaboratorException;
+import com.humanup.matrixcollaborator.aop.dto.ProjectException;
 import com.humanup.matrixcollaborator.bs.ProjectBS;
-import com.humanup.matrixcollaborator.dao.InterviewDAO;
+import com.humanup.matrixcollaborator.bs.impl.sender.RabbitMQProjectSender;
+import com.humanup.matrixcollaborator.dao.ProjectCollaboratorDAO;
 import com.humanup.matrixcollaborator.dao.ProjectDAO;
-import com.humanup.matrixcollaborator.dao.entities.Interview;
 import com.humanup.matrixcollaborator.dao.entities.Project;
-import com.humanup.matrixcollaborator.vo.InterviewVO;
+import com.humanup.matrixcollaborator.vo.ProjectCollaboratorVO;
 import com.humanup.matrixcollaborator.vo.ProjectVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,26 @@ public class ProjectBSImpl implements ProjectBS {
     @Autowired
     private ProjectDAO projectDAO;
 
+    @Autowired
+    private ProjectCollaboratorDAO projectCollaboratorDAO;
+
+    @Autowired
+    RabbitMQProjectSender rabbitMQProjectSender;
+
     @Override
-    public boolean createProject(ProjectVO projectVO) {
-        Project typeToSave =  Project.builder()
-                .projectTitle(projectVO.getProjectTitle())
-                .projectDescription(projectVO.getProjectDescription())
-                .build();
-        return projectDAO.save(typeToSave) != null;
+    @Transactional(transactionManager="transactionManagerWrite",rollbackFor = ProjectException.class)
+    public boolean createProject(ProjectVO projectVO) throws ProjectException {
+        if (null == projectVO) throw new ProjectException();
+        rabbitMQProjectSender.send(projectVO);
+        return true;
+    }
+
+    @Override
+    @Transactional(transactionManager="transactionManagerWrite",rollbackFor = ProjectCollaboratorException.class)
+    public boolean createProjectCollaborator(ProjectCollaboratorVO projectCollaboratorVO) throws ProjectCollaboratorException {
+        if (null == projectCollaboratorVO) throw new ProjectCollaboratorException();
+        rabbitMQProjectSender.send(projectCollaboratorVO);
+        return true;
     }
 
     @Override
@@ -53,4 +68,17 @@ public class ProjectBSImpl implements ProjectBS {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProjectVO> findAllProjectBymailAdresse(String mailAdresse) {
+        return projectCollaboratorDAO.findAllProjectBymailAdresse(mailAdresse).stream()
+                .map(
+                        projectFinded ->
+                                ProjectVO.builder()
+                                        .projectTitle(projectFinded.getProjectTitle())
+                                        .projectDescription(projectFinded.getProjectDescription())
+                                        .build())
+                .collect(Collectors.toList());
+    }
+
 }
